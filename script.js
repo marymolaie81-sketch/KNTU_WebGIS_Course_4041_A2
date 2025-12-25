@@ -1,6 +1,6 @@
 // 1. تنظیمات اولیه و کلید API
 // نکته: کلید API خود را در خط زیر جایگزین کنید
-const API_KEY = 'be816743cf6146cf83d0097c69592e06'; 
+const API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY'; 
 
 // تعریف نقشه در فضای سراسری
 let map;
