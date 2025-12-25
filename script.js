@@ -9,7 +9,7 @@
 // ---------------------------------------------------------
 // IMPORTANT: Replace with your actual API key before deployment, 
 // but remove it before pushing to public GitHub if using a paid plan.
-const API_KEY = "be816743cf6146cf83d0097c69592e06"; 
+const API_KEY = "YOUR_OPENWEATHERMAP_API_KEY_HERE"; 
 
 const VIEW_CONFIG = {
     center: ol.proj.fromLonLat([51.3890, 35.6892]), // Default: Tehran
