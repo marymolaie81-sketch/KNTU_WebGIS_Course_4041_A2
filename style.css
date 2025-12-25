@@ -1,17 +1,98 @@
-body {
+/* Reset اولیه برای حذف حاشیه‌های اضافی مرورگر */
+body, html {
     margin: 0;
     padding: 0;
-}
-.map {
+    height: 100%;
     width: 100%;
-    height: 100vh; /* کل ارتفاع صفحه */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* فونت مدرن‌تر */
+    overflow: hidden; /* جلوگیری از اسکرول صفحه */
 }
-#search-container {
+
+/* کانتینر اصلی نقشه */
+#map {
+    width: 100%;
+    height: 100vh;
     position: absolute;
-    top: 10px;
-    left: 50px;
-    z-index: 1000; /* روی نقشه قرار بگیرد */
-    background: white;
-    padding: 10px;
-    border-radius: 5px;
+    top: 0;
+    left: 0;
+    z-index: 0;
 }
+
+/* استایل نوار جستجو - به صورت شناور در بالا سمت چپ */
+.search-container {
+    position: absolute;
+    top: 20px;
+    left: 60px; /* فاصله از کنترل‌های زوم پیش‌فرض OpenLayers */
+    z-index: 1000; /* اولویت نمایش بالاتر از نقشه */
+    background: rgba(255, 255, 255, 0.9); /* پس‌زمینه نیمه‌شفاف */
+    padding: 10px;
+    border-radius: 8px; /* گوشه‌های گرد */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* سایه نرم برای عمق */
+    display: flex;
+    gap: 10px;
+    backdrop-filter: blur(5px); /* افکت مات‌کننده پشت */
+}
+
+/* استایل ورودی متن */
+#search-input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    font-size: 14px;
+    width: 200px;
+    transition: all 0.3s ease;
+}
+
+#search-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* استایل دکمه جستجو */
+button {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* استایل پنل اطلاعات آب و هوا - شناور در پایین سمت راست */
+#weather-info {
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+    z-index: 1000;
+    width: 250px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    font-size: 14px;
+    line-height: 1.6;
+    transform: translateY(120%); /* مخفی کردن اولیه پنل */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* انیمیشن فنری */
+}
+
+/* کلاس کمکی برای نمایش پنل */
+#weather-info.active {
+    transform: translateY(0);
+}
+
+/* استایل تیترهای داخل پنل */
+#weather-info h3 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+

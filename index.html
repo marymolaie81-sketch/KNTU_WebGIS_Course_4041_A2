@@ -2,26 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>WebGIS Assignment 2</title>
-    <!-- لینک استایل‌دهی OpenLayers -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css">
-    <!-- لینک استایل‌دهی خودمان -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- تنظیم عنوان صفحه -->
+    <title>WebGIS Dashboard | Weather & AQI</title>
+
+    <!-- اتصال آیکون (Favicon) -->
+    <!-- این خط به مرورگر می‌گوید فایل favicon.png را که کنار من است لود کن -->
+    <link rel="icon" type="image/png" href="favicon.png?v=3">
+
+    <!-- استایل‌های نقشه OpenLayers -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/openlayers/dist/ol.css">
+    
+    <!-- استایل اختصاصی پروژه -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
-    <!-- اینجا نوار جستجو قرار می‌گیرد -->
-    <div id="search-container">
-        <input type="text" id="search-input" placeholder="Search location...">
+
+    <!-- کانتینر جستجو -->
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Enter city or place name...">
         <button id="search-btn">Search</button>
     </div>
 
-    <!-- اینجا نقشه نمایش داده می‌شود -->
-    <div id="map" class="map"></div>
+    <!-- کانتینر نقشه -->
+    <div id="map"></div>
 
-    <!-- لینک کتابخانه OpenLayers -->
-    <script src="https://cdn.jsdelivr.net/npm/ol@v8.2.0/dist/ol.js"></script>
-    <!-- لینک فایل جاوااسکریپت خودمان -->
+    <!-- کانتینر اطلاعات هواشناسی -->
+    <div id="weather-info" class="weather-card">
+        <p>Click on map or search to see weather info</p>
+    </div>
+
+    <!-- کتابخانه OpenLayers -->
+    <script src="https://cdn.jsdelivr.net/npm/openlayers/dist/ol.js"></script>
+    
+    <!-- اسکریپت اصلی پروژه -->
     <script src="script.js"></script>
 </body>
 </html>
+
+
