@@ -1,98 +1,257 @@
-/* Reset اولیه برای حذف حاشیه‌های اضافی مرورگر */
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* فونت مدرن‌تر */
-    overflow: hidden; /* جلوگیری از اسکرول صفحه */
+/* ---------------------------------------------------------
+   1. GLOBAL VARIABLES & RESET
+   --------------------------------------------------------- */
+   :root {
+    /* اصلاح رنگ: استفاده از رنگ تیره با شفافیت 75% برای کنتراست بالا */
+    --glass-bg: rgba(20, 20, 20, 0.75);
+    
+    /* اصلاح بوردر: محو‌تر و ظریف‌تر */
+    --glass-border: rgba(255, 255, 255, 0.15);
+    
+    --text-color: #ffffff;
+    
+    /* سایه عمیق‌تر برای جداسازی بهتر از نقشه */
+    --primary-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); 
 }
 
-/* کانتینر اصلی نقشه */
-#map {
-    width: 100%;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+    background-color: #1a1a1a;
+    overflow: hidden; /* جلوگیری از اسکرول صفحه اصلی */
     height: 100vh;
+    width: 100vw;
+}
+
+/* ---------------------------------------------------------
+   2. LAYOUT & Z-INDEX STRUCTURE
+   --------------------------------------------------------- */
+.dashboard-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* کانتینر نقشه: پایین‌ترین لایه */
+.map-container {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Base Layer */
 }
 
-/* استایل نوار جستجو - به صورت شناور در بالا سمت چپ */
-.search-container {
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+/* متن کپی‌رایت یا توضیحات روی نقشه */
+.map-overlay-text {
     position: absolute;
-    top: 20px;
-    left: 60px; /* فاصله از کنترل‌های زوم پیش‌فرض OpenLayers */
-    z-index: 1000; /* اولویت نمایش بالاتر از نقشه */
-    background: rgba(255, 255, 255, 0.9); /* پس‌زمینه نیمه‌شفاف */
-    padding: 10px;
-    border-radius: 8px; /* گوشه‌های گرد */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* سایه نرم برای عمق */
-    display: flex;
-    gap: 10px;
-    backdrop-filter: blur(5px); /* افکت مات‌کننده پشت */
+    bottom: 20px;
+    right: 20px;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 2;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
 }
 
-/* استایل ورودی متن */
-#search-input {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-    font-size: 14px;
-    width: 200px;
+/* ---------------------------------------------------------
+   3. FLOATING PANELS (SIDEBAR & HEADER)
+   --------------------------------------------------------- */
+
+/* هدر اصلی */
+.main-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.5rem;
+    text-align: center;
+    z-index: 1000; /* Top Layer */
+    pointer-events: none; /* کلیک‌ها از فضای خالی رد شوند */
+}
+
+.main-header h1 {
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8); /* سایه متن برای خوانایی روی هر پس‌زمینه‌ای */
+}
+
+/* سایدبار (محل قرارگیری کارت‌ها) */
+.sidebar {
+    position: absolute;
+    top: 80px;
+    left: 30px;
+    width: 340px; /* کمی عریض‌تر برای نمایش بهتر */
+    height: auto;
+    max-height: 85vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 1000; /* Top Layer */
+    padding-bottom: 20px;
+    
+    /* مخفی کردن اسکرول بار */
+    scrollbar-width: none; 
+}
+.sidebar::-webkit-scrollbar { display: none; }
+
+/* ---------------------------------------------------------
+   4. GLASSMORPHISM CARDS (The Dark Glass Style)
+   --------------------------------------------------------- */
+.search-box, .info-card {
+    background: var(--glass-bg);
+    
+    /* تاری زیاد برای محو کردن جزئیات نقشه زیر کارت */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--primary-shadow);
     transition: all 0.3s ease;
 }
 
-#search-input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+/* افکت هاور روی کارت‌ها */
+.search-box:hover, .info-card:hover {
+    transform: translateY(-2px);
+    background: rgba(30, 30, 30, 0.85); /* کمی روشن‌تر/مات‌تر هنگام تعامل */
+    border-color: rgba(255, 255, 255, 0.25);
 }
 
-/* استایل دکمه جستجو */
-button {
-    padding: 8px 15px;
-    background-color: #007bff;
-    color: white;
+/* ---------------------------------------------------------
+   5. COMPONENT STYLES
+   --------------------------------------------------------- */
+
+/* Search Component */
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-box input {
+    background: transparent;
     border: none;
-    border-radius: 5px;
+    color: white;
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    outline: none;
+    font-weight: 500;
+}
+
+.search-box input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.search-box button {
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
     cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+    transition: background 0.2s;
 }
 
-button:hover {
-    background-color: #0056b3;
+.search-box button:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
 
-/* استایل پنل اطلاعات آب و هوا - شناور در پایین سمت راست */
-#weather-info {
-    position: absolute;
-    bottom: 30px;
-    right: 20px;
-    z-index: 1000;
-    width: 250px;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    font-size: 14px;
-    line-height: 1.6;
-    transform: translateY(120%); /* مخفی کردن اولیه پنل */
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* انیمیشن فنری */
-}
-
-/* کلاس کمکی برای نمایش پنل */
-#weather-info.active {
-    transform: translateY(0);
-}
-
-/* استایل تیترهای داخل پنل */
-#weather-info h3 {
-    margin-top: 0;
-    color: #333;
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 5px;
+/* Weather & Info Typography */
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 10px;
 }
 
+.card-header h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    opacity: 0.9;
+    letter-spacing: 1px;
+}
+
+.temp-display {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+.description {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    text-transform: capitalize;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Air Quality Section */
+.aqi-status {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+.pollutants {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.pol-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08); /* پس‌زمینه داخلی ظریف */
+    padding: 10px;
+    border-radius: 12px;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.pol-label {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-bottom: 4px;
+}
+
+.pol-value {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.coords-info {
+    text-align: center;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 5px;
+}

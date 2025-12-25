@@ -3,41 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGIS Dashboard | Weather & AQI Analytics</title>
     
-    <!-- تنظیم عنوان صفحه -->
-    <title>WebGIS Dashboard | Weather & AQI</title>
-
-    <!-- اتصال آیکون (Favicon) -->
-    <!-- این خط به مرورگر می‌گوید فایل favicon.png را که کنار من است لود کن -->
-    <link rel="icon" type="image/png" href="favicon.png?v=3">
-
-    <!-- استایل‌های نقشه OpenLayers -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/openlayers/dist/ol.css">
+    <!-- OpenLayers CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/css/ol.css" type="text/css">
     
-    <!-- استایل اختصاصی پروژه -->
-    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS (Version query string to bypass cache) -->
+    <link rel="stylesheet" href="style.css?v=4.0">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/2942/2942544.png">
 </head>
 <body>
 
-    <!-- کانتینر جستجو -->
-    <div class="search-container">
-        <input type="text" id="search-input" placeholder="Enter city or place name...">
-        <button id="search-btn">Search</button>
+    <!-- Main Background Wrapper -->
+    <div class="dashboard-wrapper">
+        
+        <!-- Header Section -->
+        <header class="main-header glass-effect">
+            <h1>GLOBAL EARTH ANALYTICS</h1>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="content-container">
+            
+            <!-- Left Sidebar: Controls & Data -->
+            <aside class="sidebar glass-effect">
+                
+                <!-- 1. Search Section -->
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search Location (e.g., Tehran)..." autocomplete="off">
+                    <button id="search-btn" aria-label="Search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+
+                <!-- 2. Weather Card -->
+                <section class="info-card weather-card">
+                    <div class="card-header">
+                        <i class="fas fa-cloud-sun"></i>
+                        <h3>WEATHER</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="temp-display">
+                            <span id="temp-val">--</span>°C
+                        </div>
+                        <p id="weather-desc" class="description">Waiting for location...</p>
+                        <div class="details">
+                            <small><i class="fas fa-tint"></i> Humidity: <span id="humidity-val">--</span>%</small>
+                            <small><i class="fas fa-wind"></i> Wind: <span id="wind-speed">--</span> m/s</small>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. AQI Card -->
+                <section class="info-card aqi-card">
+                    <div class="card-header">
+                        <i class="fas fa-lungs"></i>
+                        <h3>AIR QUALITY (AQI)</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="aqi-status">
+                            Index: <span id="aqi-index">--</span>
+                        </div>
+                        <p id="aqi-text" class="status-text">--</p>
+                        
+                        <!-- Pollutants Detail -->
+                        <div class="pollutants">
+                            <div class="pol-item">
+                                <span>PM2.5</span>
+                                <span id="pm25-val">--</span>
+                            </div>
+                            <div class="pol-item">
+                                <span>CO</span>
+                                <span id="co-val">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 4. Coordinates Info -->
+                <div class="coords-info">
+                    <small>Lat: <span id="lat-val">0.00</span> | Lon: <span id="lon-val">0.00</span></small>
+                </div>
+
+            </aside>
+
+            <!-- Right Area: Map -->
+            <main class="map-container glass-effect">
+                <div id="map" class="map"></div>
+                <!-- Overlay text similar to the image design -->
+                <div class="map-overlay-text">Interactive WebGIS Map Layer</div>
+            </main>
+            
+        </div>
     </div>
 
-    <!-- کانتینر نقشه -->
-    <div id="map"></div>
+    <!-- Scripts -->
+    <!-- OpenLayers JS -->
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
+    <!-- Main Application Script -->
+    <script src="script.js?v=4.0"></script>
 
-    <!-- کانتینر اطلاعات هواشناسی -->
-    <div id="weather-info" class="weather-card">
-        <p>Click on map or search to see weather info</p>
-    </div>
-
-    <!-- کتابخانه OpenLayers -->
-    <script src="https://cdn.jsdelivr.net/npm/openlayers/dist/ol.js"></script>
-    
-    <!-- اسکریپت اصلی پروژه -->
-    <script src="script.js"></script>
 </body>
 </html>
 
